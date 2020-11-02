@@ -7,7 +7,7 @@ metadata:
     app: test-sre
   namespace: test-sre
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: test-sre
@@ -35,5 +35,13 @@ spec:
           httpGet: {path: /, port: 80}
           failureThreshold: 10
           periodSeconds: 1
-
-
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - test-sre
+            topologyKey: kubernetes.io/hostname
