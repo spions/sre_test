@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: test-sre
+  namespace: test-sre
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: test-sre.shurshun.ru
+    http:
+      paths:
+      - backend:
+          serviceName: test-sre
+          servicePort: 80

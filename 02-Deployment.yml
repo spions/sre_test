@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-sre
+  labels:
+    app: test-sre
+  namespace: test-sre
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: test-sre
+  template:
+    metadata:
+      labels:
+        app: test-sre
+    spec:
+      containers:
+      - name: test-sre
+        image: library/nginx:1.14-alpine
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "128Mi"
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+        livenessProbe:
+            httpGet: {path: /, port: 80}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+        startupProbe:
+          httpGet: {path: /, port: 80}
+          failureThreshold: 10
+          periodSeconds: 1
+
+
